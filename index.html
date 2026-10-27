@@ -36,7 +36,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 999999;
+            z-index: 99999;
         }
 
         .welcome-logo {
@@ -73,6 +73,7 @@
             background-color: #d1d5db;
         }
 
+        /* --- APPLICATION PRINCIPALE --- */
         #main-app {
             display: none;
         }
@@ -369,13 +370,14 @@
 </head>
 <body>
 
-    <!-- ÉCRAN D'ACCUEIL (Disparition directe sans animation complexe) -->
+    <!-- ÉCRAN D'ACCUEIL -->
     <div id="welcome-screen">
         <div class="welcome-logo">VAULT</div>
         <div class="welcome-sub">PS4 Remote Installer Hub</div>
         <button class="enter-btn" onclick="enterVault()">ENTRER</button>
     </div>
 
+    <!-- APPLICATION PRINCIPALE -->
     <div id="main-app">
         <header>
             <div class="logo">VAULT.</div>
@@ -402,4 +404,61 @@
         <div id="downloads-section" class="section">
             <div class="hero-banner">
                 <h1 id="dl-title">File d'attente</h1>
-                <p id="dl-subtitle">Suivi des transferts actifs vers
+                <p id="dl-subtitle">Suivi des transferts actifs vers la console</p>
+            </div>
+            <div class="download-manager" id="downloads-container">
+                <div id="no-downloads" style="color: var(--text-muted); text-align: center; padding: 20px;">Aucun transfert en cours.</div>
+            </div>
+        </div>
+
+        <!-- HISTORIQUE -->
+        <div id="history-section" class="section">
+            <div class="hero-banner">
+                <h1 id="hist-title">Historique</h1>
+                <p id="hist-subtitle">Registre des éléments envoyés</p>
+            </div>
+            <div class="history-list" id="history-container">
+                <div id="no-history" style="color: var(--text-muted); text-align: center; padding: 20px;">Aucun historique enregistré.</div>
+            </div>
+        </div>
+
+        <!-- PARAMÈTRES -->
+        <div id="settings-section" class="section">
+            <div class="hero-banner">
+                <h1 id="set-title">Paramètres</h1>
+                <p id="set-subtitle">Configuration de l'adresse IP PS4 et de la langue</p>
+            </div>
+            <div class="settings-card">
+                <div class="setting-group">
+                    <label id="lbl-ip">Adresse IP de la PS4</label>
+                    <input type="text" id="setting-ip" placeholder="Ex: 192.168.1.50">
+                </div>
+                <div class="setting-group">
+                    <label id="lbl-lang">Langue / Language</label>
+                    <select id="setting-lang" onchange="changeLanguage(this.value)">
+                        <option value="fr">Français</option>
+                        <option value="en">English</option>
+                    </select>
+                </div>
+                <button class="save-settings-btn" onclick="saveSettings()" id="btn-save">Enregistrer</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const translations = {
+            fr: {
+                navStore: "Catalogue", navDl: "Téléchargements", navHist: "Historique", navSet: "Paramètres",
+                title: "Catalogue de Jeux", subtitle: "Envoyez vos paquets directement à la PS4 via Remote Package Installer",
+                dlTitle: "File d'attente", dlSubtitle: "Suivi des transferts actifs vers la console", noDl: "Aucun transfert en cours.",
+                histTitle: "Historique", histSubtitle: "Registre des éléments envoyés", noHist: "Aucun historique enregistré.",
+                setTitle: "Paramètres", setSubtitle: "Configuration de l'adresse IP PS4 et de la langue",
+                lblIp: "Adresse IP de la PS4", lblLang: "Langue / Language", btnSave: "Enregistrer",
+                btnInstall: "Installer sur PS4",
+                saved: "Paramètres enregistrés avec succès !",
+                noIp: "Veuillez configurer l'adresse IP de votre PS4 dans l'onglet Paramètres !",
+                statusActive: "Envoi en cours vers la PS4...",
+                statusDone: "Envoyé avec succès (Package Installer)"
+            },
+            en: {
+                nav
