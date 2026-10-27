@@ -583,4 +583,102 @@
                         const btnText = translations[currentLang].btnInstall;
                         storeGrid.innerHTML += `
                             <div class="card">
-                                <div class="card-img-contain
+                                <div class="card-img-container">
+                                    <img src="${fileUrl}" class="card-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                    <div class="card-fallback" style="display:none;">VAULT ASSET</div>
+                                </div>
+                                <div class="card-content">
+                                    <div>
+                                        <span class="badge">CUSA : ${key}</span>
+                                        <h3>Élément ${key}</h3>
+                                    </div>
+                                    <button class="btn" onclick="sendToPS4('${key}', '${fileUrl}')">${btnText}</button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                });
+        }
+
+        function sendToPS4(itemId, pkgUrl) {
+            const ip = localStorage.getItem('ps4_ip') || document.getElementById('setting-ip').value.trim();
+            if (!ip) {
+                alert(translations[currentLang].noIp);
+                switchTab('settings', document.getElementById('nav-settings'));
+                return;
+            }
+
+            switchTab('downloads', document.getElementById('nav-downloads'));
+            
+            const container = document.getElementById('downloads-container');
+            const noDl = document.getElementById('no-downloads');
+            if(noDl) noDl.style.display = 'none';
+
+            const downloadId = 'dl-' + Date.now();
+            const t = translations[currentLang];
+
+            container.innerHTML += `
+                <div class="download-item" id="${downloadId}">
+                    <div class="download-header">
+                        <span>CUSA : ${itemId}</span>
+                        <span class="dl-percent">0%</span>
+                    </div>
+                    <div class="download-info">
+                        <span class="dl-speed">Remote Link</span>
+                        <span class="dl-status">${t.statusActive}</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" style="width: 0%;"></div>
+                    </div>
+                </div>
+            `;
+
+            const targetApi = `http://${ip}:12800/api/install`;
+            const payload = JSON.stringify({
+                type: "direct",
+                objects: [{ package_url: pkgUrl }]
+            });
+
+            fetch(targetApi, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: payload
+            })
+            .then(() => {
+                const itemElement = document.getElementById(downloadId);
+                if(itemElement) {
+                    itemElement.querySelector('.dl-percent').innerText = '100%';
+                    itemElement.querySelector('.dl-speed').innerText = 'Terminé';
+                    itemElement.querySelector('.dl-status').innerText = t.statusDone;
+                    itemElement.querySelector('.progress-bar-fill').style.width = '100%';
+                }
+                addToHistory('CUSA : ' + itemId);
+            })
+            .catch(err => {
+                console.error(err);
+                const itemElement = document.getElementById(downloadId);
+                if(itemElement) {
+                    itemElement.querySelector('.dl-status').innerText = "Erreur de liaison réseau PS4";
+                }
+            });
+        }
+
+        function addToHistory(itemName) {
+            const time = new Date().toLocaleTimeString();
+            historyListArray.unshift({name: itemName, time: time});
+            
+            const container = document.getElementById('history-container');
+            container.innerHTML = '';
+            
+            historyListArray.forEach(item => {
+                container.innerHTML += `
+                    <div class="history-item">
+                        <span><strong>${item.name}</strong></span>
+                        <span style="color: var(--text-muted);">${item.time}</span>
+                    </div>
+                `;
+            });
+        }
+    </script>
+</body>
+</html>
