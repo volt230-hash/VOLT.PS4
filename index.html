@@ -30,7 +30,7 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid var(--border-color);
-            background-color: rgba(8, 9, 10, 0.9);
+            background-color: rgba(8, 9, 10, 0.95);
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -41,4 +41,104 @@
             font-size: 20px;
             font-weight: 900;
             letter-spacing: 4px;
-            text
+            text-transform: uppercase;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 4px;
+            white-space: nowrap;
+            transition: color 0.2s, background 0.2s;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+            background: var(--surface-hover);
+        }
+
+        .tab-btn.active {
+            color: var(--text-main);
+            border-bottom: 2px solid var(--text-main);
+        }
+
+        .section {
+            display: none;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 30px;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .hero-banner {
+            padding: 30px;
+            background: linear-gradient(135deg, var(--surface-color), #0d0f13);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 35px;
+        }
+
+        .hero-banner h1 {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin: 0 0 8px 0;
+            text-transform: uppercase;
+        }
+
+        .hero-banner p {
+            font-size: 12px;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        /* --- PARAMÈTRES --- */
+        .settings-card {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 30px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .setting-group {
+            margin-bottom: 25px;
+        }
+
+        .setting-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+        }
+
+        .setting-group input, .setting-group select {
+            width: 100%;
+            background: #08090a;
+            border: 1px solid var(--border-color);
+            color: #fff;
+            padding: 12px;
+            border
+        
