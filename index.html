@@ -12,6 +12,9 @@
             --text-main: #ffffff;
             --text-muted: #8c929d;
             --border-color: #22262e;
+            --focus-color: #ffffff;
+            --focus-bg: #2b303c;
+            --progress-bar: #ffffff;
         }
 
         body {
@@ -58,7 +61,7 @@
         .enter-btn {
             background-color: #ffffff;
             color: #050607;
-            border: none;
+            border: 2px solid transparent;
             padding: 14px 40px;
             font-size: 12px;
             font-weight: 800;
@@ -66,10 +69,15 @@
             text-transform: uppercase;
             cursor: pointer;
             border-radius: 4px;
+            transition: transform 0.2s;
         }
 
-        .enter-btn:hover {
-            background-color: #d1d5db;
+        .enter-btn:focus, .enter-btn.ps4-focus {
+            background-color: var(--focus-bg);
+            color: #fff;
+            border-color: var(--focus-color);
+            outline: none;
+            transform: scale(1.05);
         }
 
         #main-app {
@@ -82,7 +90,7 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid var(--border-color);
-            background-color: rgba(8, 9, 10, 0.85);
+            background-color: rgba(8, 9, 10, 0.9);
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -96,10 +104,10 @@
             text-transform: uppercase;
         }
 
-        .nav-right {
+        .tabs {
             display: flex;
             gap: 20px;
-            align-items: center;
+            overflow-x: auto;
         }
 
         .tab-btn {
@@ -111,7 +119,10 @@
             text-transform: uppercase;
             color: var(--text-muted);
             cursor: pointer;
-            padding: 5px 0;
+            padding: 8px 12px;
+            border-radius: 4px;
+            white-space: nowrap;
+            transition: background 0.2s, color 0.2s;
         }
 
         .tab-btn.active {
@@ -119,21 +130,11 @@
             border-bottom: 2px solid var(--text-main);
         }
 
-        .settings-icon-btn {
-            background: var(--surface-color);
-            border: 1px solid var(--border-color);
-            color: #fff;
-            padding: 6px 12px;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: 700;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .settings-icon-btn:hover {
-            background: var(--surface-hover);
+        /* Effet de focus manette PS4 */
+        .tab-btn.ps4-focus, .btn.ps4-focus, .save-settings-btn.ps4-focus {
+            background-color: var(--focus-bg) !important;
+            color: var(--focus-color) !important;
+            outline: 2px solid var(--focus-color);
         }
 
         .section {
@@ -206,6 +207,12 @@
             box-sizing: border-box;
         }
 
+        .setting-group input:focus, .setting-group select:focus, .ps4-focus-input {
+            border-color: #fff !important;
+            outline: none;
+            background: #15181f;
+        }
+
         .save-settings-btn {
             background: #ffffff;
             color: #08090a;
@@ -219,11 +226,7 @@
             cursor: pointer;
         }
 
-        .save-settings-btn:hover {
-            background: #d1d5db;
-        }
-
-        /* --- GRILLE --- */
+        /* --- GRILLE DU CATALOGUE --- */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -238,6 +241,13 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .card.ps4-focus {
+            border-color: #ffffff;
+            transform: translateY(-4px);
+            background-color: var(--surface-hover);
         }
 
         .card-img-container {
@@ -306,10 +316,68 @@
             border-radius: 4px;
             cursor: pointer;
             border: none;
+            transition: background 0.2s;
         }
 
-        .btn:hover {
-            background-color: #9ca3af;
+        /* --- TÉLÉCHARGEMENTS & HISTORIQUE --- */
+        .download-manager, .history-list {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 25px;
+        }
+
+        .download-item {
+            background: #0b0d10;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .download-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .download-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 8px;
+            background-color: #1a1d23;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background-color: var(--progress-bar);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 14px 10px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 12px;
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
         }
     </style>
 </head>
@@ -318,15 +386,17 @@
     <div id="welcome-screen">
         <div class="welcome-logo">VAULT</div>
         <div class="welcome-sub">PS4 Remote Installer Hub</div>
-        <button class="enter-btn" onclick="enterVault()">ENTRER</button>
+        <button class="enter-btn ps4-focus" id="btn-enter" onclick="enterVault()">ENTRER</button>
     </div>
 
     <div id="main-app">
         <header>
             <div class="logo">VAULT.</div>
-            <div class="nav-right">
-                <button class="tab-btn active" onclick="switchTab('store', event)">Catalogue</button>
-                <button class="tab-btn" onclick="switchTab('settings', event)">Paramètres</button>
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('store', event)" id="nav-store">Catalogue</button>
+                <button class="tab-btn" onclick="switchTab('downloads', event)" id="nav-downloads">Téléchargements</button>
+                <button class="tab-btn" onclick="switchTab('history', event)" id="nav-history">Historique</button>
+                <button class="tab-btn" onclick="switchTab('settings', event)" id="nav-settings">Paramètres</button>
             </div>
         </header>
 
@@ -334,171 +404,13 @@
         <div id="store-section" class="section active">
             <div class="hero-banner">
                 <h1 id="txt-title">Catalogue de Jeux</h1>
-                <p id="txt-subtitle">Cliquez pour envoyer directement à la PS4 via Remote Package Installer</p>
+                <p id="txt-subtitle">Envoyez vos paquets directement à la PS4 via Remote Package Installer</p>
             </div>
             <div class="grid" id="games-grid">
                 <div style="color: var(--text-muted); text-align: center; grid-column: 1/-1; padding: 40px;">Chargement...</div>
             </div>
         </div>
 
-        <!-- PARAMÈTRES -->
-        <div id="settings-section" class="section">
-            <div class="hero-banner">
-                <h1>Paramètres</h1>
-                <p>Configuration de la liaison PS4 et de la langue</p>
-            </div>
-            <div class="settings-card">
-                <div class="setting-group">
-                    <label>Adresse IP de la PS4</label>
-                    <input type="text" id="setting-ip" placeholder="Ex: 192.168.1.50">
-                </div>
-                <div class="setting-group">
-                    <label>Langue / Language</label>
-                    <select id="setting-lang" onchange="changeLanguage(this.value)">
-                        <option value="fr">Français</option>
-                        <option value="en">English</option>
-                    </select>
-                </div>
-                <button class="save-settings-btn" onclick="saveSettings()">Enregistrer</button>
-            </div>
-        </div>
-    </div>
+        <!-- TÉLÉCHARGEMENTS -->
 
-    <script>
-        // Textes multilingues
-        const translations = {
-            fr: {
-                title: "Catalogue de Jeux",
-                subtitle: "Cliquez pour envoyer directement à la PS4 via Remote Package Installer",
-                btnInstall: "Installer sur PS4",
-                saved: "Paramètres enregistrés avec succès !",
-                noIp: "Veuillez configurer l'adresse IP de votre PS4 dans l'onglet Paramètres !"
-            },
-            en: {
-                title: "Game Catalog",
-                subtitle: "Click to send directly to PS4 via Remote Package Installer",
-                btnInstall: "Install on PS4",
-                saved: "Settings saved successfully!",
-                noIp: "Please configure your PS4 IP address in the Settings tab!"
-            }
-        };
-
-        let currentLang = 'fr';
-
-        function enterVault() {
-            document.getElementById('welcome-screen').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('welcome-screen').style.display = 'none';
-                document.getElementById('main-app').style.display = 'block';
-                loadSettings();
-                loadGamesJson();
-            }, 400);
-        }
-
-        // Charger les paramètres sauvegardés dans le navigateur
-        function loadSettings() {
-            const savedIp = localStorage.getItem('ps4_ip');
-            const savedLang = localStorage.getItem('ps4_lang') || 'fr';
-            
-            if (savedIp) {
-                document.getElementById('setting-ip').value = savedIp;
-            }
-            document.getElementById('setting-lang').value = savedLang;
-            changeLanguage(savedLang);
-        }
-
-        // Sauvegarder les paramètres
-        function saveSettings() {
-            const ip = document.getElementById('setting-ip').value.trim();
-            const lang = document.getElementById('setting-lang').value;
-
-            localStorage.setItem('ps4_ip', ip);
-            localStorage.setItem('ps4_lang', lang);
-            
-            alert(translations[currentLang].saved);
-            switchTab('store', { target: document.querySelectorAll('.tab-btn')[0] });
-        }
-
-        // Changer la langue de l'interface
-        function changeLanguage(lang) {
-            currentLang = lang;
-            document.getElementById('txt-title').innerText = translations[lang].title;
-            document.getElementById('txt-subtitle').innerText = translations[lang].subtitle;
-            
-            // Recharger la grille pour actualiser les textes des boutons
-            if(document.getElementById('games-grid').innerHTML.trim() !== "") {
-                loadGamesJson();
-            }
-        }
-
-        function switchTab(tabName, event) {
-            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-
-            document.getElementById(tabName + '-section').classList.add('active');
-            if(event && event.target) {
-                event.target.classList.add('active');
-            }
-        }
-
-        function loadGamesJson() {
-            fetch('games.json')
-                .then(response => response.json())
-                .then(data => {
-                    const storeGrid = document.getElementById('games-grid');
-                    storeGrid.innerHTML = '';
-                    Object.keys(data).forEach(key => {
-                        const fileUrl = data[key];
-                        const btnText = translations[currentLang].btnInstall;
-                        storeGrid.innerHTML += `
-                            <div class="card">
-                                <div class="card-img-container">
-                                    <img src="${fileUrl}" class="card-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                    <div class="card-fallback" style="display:none;">VAULT ASSET</div>
-                                </div>
-                                <div class="card-content">
-                                    <div>
-                                        <span class="badge">CUSA : ${key}</span>
-                                        <h3>Élément ${key}</h3>
-                                    </div>
-                                    <button class="btn" onclick="sendToPS4('${fileUrl}')">${btnText}</button>
-                                </div>
-                            </div>
-                        `;
-                    });
-                });
-        }
-
-        function sendToPS4(pkgUrl) {
-            const ip = localStorage.getItem('ps4_ip') || document.getElementById('setting-ip').value.trim();
-            if (!ip) {
-                alert(translations[currentLang].noIp);
-                switchTab('settings', document.querySelectorAll('.tab-btn')[1]);
-                return;
-            }
-
-            const targetApi = `http://${ip}:12800/api/install`;
-            const payload = JSON.stringify({
-                type: "direct",
-                objects: [{ package_url: pkgUrl }]
-            });
-
-            fetch(targetApi, {
-                method: 'POST',
-                body: payload
-            })
-            .then(response => {
-                if(response.ok) {
-                    alert(currentLang === 'fr' ? "Succès ! Paquet envoyé à la PS4." : "Success! Package sent to PS4.");
-                } else {
-                    alert(currentLang === 'fr' ? "Erreur : Vérifiez l'IP et l'app Remote Package Installer." : "Error: Check IP and Remote Package Installer app.");
-                }
-            })
-            .catch(err => {
-                console.error(err);
-                alert(currentLang === 'fr' ? "Échec de connexion réseau." : "Network connection failed.");
-            });
-        }
-    </script>
-</body>
-</html>
+        
