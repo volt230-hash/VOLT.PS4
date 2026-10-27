@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vault — PS4 Store</title>
+    <title>Vault — PS4 Remote Hub</title>
     <style>
         :root {
             --bg-color: #08090a;
@@ -12,7 +12,6 @@
             --text-main: #ffffff;
             --text-muted: #8c929d;
             --border-color: #22262e;
-            --accent: #ffffff;
         }
 
         body {
@@ -24,7 +23,6 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- ÉCRAN D'ACCUEIL --- */
         #welcome-screen {
             position: fixed;
             top: 0;
@@ -68,21 +66,18 @@
             text-transform: uppercase;
             cursor: pointer;
             border-radius: 4px;
-            transition: transform 0.2s, background-color 0.2s;
         }
 
         .enter-btn:hover {
             background-color: #d1d5db;
-            transform: scale(1.03);
         }
 
-        /* --- APPLICATION PRINCIPALE --- */
         #main-app {
             display: none;
         }
 
         header {
-            padding: 24px 40px;
+            padding: 20px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -101,27 +96,22 @@
             text-transform: uppercase;
         }
 
-        .tabs {
+        .config-box {
             display: flex;
-            gap: 25px;
-        }
-
-        .tab-btn {
-            background: none;
-            border: none;
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
+            align-items: center;
+            gap: 10px;
+            font-size: 11px;
             color: var(--text-muted);
-            cursor: pointer;
-            padding: 5px 0;
-            transition: color 0.2s;
         }
 
-        .tab-btn.active {
-            color: var(--text-main);
-            border-bottom: 2px solid var(--text-main);
+        .config-box input {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            color: #fff;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            width: 120px;
         }
 
         .section {
@@ -159,7 +149,6 @@
             text-transform: uppercase;
         }
 
-        /* --- GRILLE MODERNE DES JEUX --- */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -174,12 +163,6 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: transform 0.25s ease, border-color 0.25s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-4px);
-            border-color: #4b5263;
         }
 
         .card-img-container {
@@ -194,11 +177,6 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.4s ease;
-        }
-
-        .card:hover .card-img {
-            transform: scale(1.05);
         }
 
         .card-fallback {
@@ -209,9 +187,7 @@
             align-items: center;
             color: var(--text-muted);
             font-weight: 800;
-            letter-spacing: 2px;
             font-size: 12px;
-            background: linear-gradient(45deg, #121418, #1a1d23);
         }
 
         .card-content {
@@ -232,14 +208,11 @@
             border-radius: 3px;
             margin-bottom: 10px;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            align-self: flex-start;
         }
 
         .card h3 {
             font-size: 13px;
             font-weight: 700;
-            letter-spacing: 1px;
             margin: 0 0 15px 0;
             color: #e5e7eb;
         }
@@ -258,143 +231,46 @@
             border-radius: 4px;
             cursor: pointer;
             border: none;
-            transition: background-color 0.2s;
         }
 
         .btn:hover {
             background-color: #9ca3af;
         }
-
-        /* --- TÉLÉCHARGEMENTS --- */
-        .download-manager {
-            background: var(--surface-color);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 25px;
-        }
-
-        .download-item {
-            background: #0b0d10;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 20px;
-            margin-bottom: 15px;
-        }
-
-        .download-header {
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-            font-weight: 800;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .download-info {
-            display: flex;
-            justify-content: space-between;
-            font-size: 11px;
-            color: var(--text-muted);
-            margin-bottom: 10px;
-        }
-
-        .progress-bar-bg {
-            width: 100%;
-            height: 8px;
-            background-color: #1a1d23;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .progress-bar-fill {
-            height: 100%;
-            background-color: #ffffff;
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-
-        /* --- HISTORIQUE --- */
-        .history-list {
-            background: var(--surface-color);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 20px;
-        }
-
-        .history-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 14px 10px;
-            border-bottom: 1px solid var(--border-color);
-            font-size: 12px;
-        }
-
-        .history-item:last-child {
-            border-bottom: none;
-        }
     </style>
 </head>
 <body>
 
-    <!-- ÉCRAN D'ACCUEIL -->
     <div id="welcome-screen">
         <div class="welcome-logo">VAULT</div>
-        <div class="welcome-sub">PS4 Jailbreak Environment</div>
+        <div class="welcome-sub">PS4 Remote Installer Hub</div>
         <button class="enter-btn" onclick="enterVault()">ENTRER</button>
     </div>
 
-    <!-- APPLICATION -->
     <div id="main-app">
         <header>
             <div class="logo">VAULT.</div>
-            <div class="tabs">
-                <button class="tab-btn active" onclick="switchTab('store', event)">Catalogue</button>
-                <button class="tab-btn" onclick="switchTab('downloads', event)">Téléchargements</button>
-                <button class="tab-btn" onclick="switchTab('history', event)">Historique</button>
+            <div class="config-box">
+                <span>IP PS4 :</span>
+                <input type="text" id="ps4-ip" placeholder="Ex: 192.168.1.50" value="">
             </div>
         </header>
 
-        <!-- CATALOGUE -->
         <div id="store-section" class="section active">
             <div class="hero-banner">
                 <h1>Catalogue de Jeux</h1>
-                <p>Bibliothèque interactive synchronisée</p>
+                <p>Cliquez pour envoyer directement à la PS4 via Remote Package Installer</p>
             </div>
             <div class="grid" id="games-grid">
-                <div style="color: var(--text-muted); font-size: 11px; text-align: center; grid-column: 1/-1; padding: 40px;">Chargement du catalogue...</div>
-            </div>
-        </div>
-
-        <!-- TÉLÉCHARGEMENTS -->
-        <div id="downloads-section" class="section">
-            <div class="hero-banner">
-                <h1>File d'attente</h1>
-                <p>Suivi des transferts actifs</p>
-            </div>
-            <div class="download-manager" id="downloads-container">
-                <div style="color: var(--text-muted); font-size: 11px; text-align: center; padding: 20px;">Aucun téléchargement en cours.</div>
-            </div>
-        </div>
-
-        <!-- HISTORIQUE -->
-        <div id="history-section" class="section">
-            <div class="hero-banner">
-                <h1>Historique</h1>
-                <p>Registre des éléments traités</p>
-            </div>
-            <div class="history-list" id="history-container">
-                <div style="color: var(--text-muted); font-size: 11px; text-align: center; padding: 20px;">Aucun historique enregistré.</div>
+                <div style="color: var(--text-muted); text-align: center; grid-column: 1/-1; padding: 40px;">Chargement...</div>
             </div>
         </div>
     </div>
 
     <script>
         function enterVault() {
-            const welcome = document.getElementById('welcome-screen');
-            welcome.style.opacity = '0';
-            welcome.style.visibility = 'hidden';
+            document.getElementById('welcome-screen').style.opacity = '0';
             setTimeout(() => {
+                document.getElementById('welcome-screen').style.display = 'none';
                 document.getElementById('main-app').style.display = 'block';
                 loadGamesJson();
             }, 400);
@@ -406,15 +282,12 @@
                 .then(data => {
                     const storeGrid = document.getElementById('games-grid');
                     storeGrid.innerHTML = '';
-
-                    const keys = Object.keys(data);
-
-                    keys.forEach(key => {
-                        const imageUrl = data[key];
-                        const cardHTML = `
+                    Object.keys(data).forEach(key => {
+                        const fileUrl = data[key];
+                        storeGrid.innerHTML += `
                             <div class="card">
                                 <div class="card-img-container">
-                                    <img src="${imageUrl}" class="card-img" alt="PS4 Asset" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                    <img src="${fileUrl}" class="card-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                     <div class="card-fallback" style="display:none;">VAULT ASSET</div>
                                 </div>
                                 <div class="card-content">
@@ -422,101 +295,43 @@
                                         <span class="badge">CUSA : ${key}</span>
                                         <h3>Élément ${key}</h3>
                                     </div>
-                                    <button class="btn" onclick="startDownload('${key}', '${imageUrl}')">Télécharger .PKG</button>
+                                    <button class="btn" onclick="sendToPS4('${fileUrl}')">Installer sur PS4</button>
                                 </div>
                             </div>
                         `;
-                        storeGrid.innerHTML += cardHTML;
                     });
-                })
-                .catch(error => {
-                    console.error('Erreur:', error);
-                    document.getElementById('games-grid').innerHTML = '<div style="color: #ef4444; text-align: center; grid-column: 1/-1; padding: 40px;">Erreur de lecture du fichier games.json.</div>';
                 });
         }
 
-        function switchTab(tabName, event) {
-            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-
-            document.getElementById(tabName + '-section').classList.add('active');
-            event.target.classList.add('active');
-        }
-
-        function startDownload(itemId, fileUrl) {
-            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById('downloads-section').classList.add('active');
-            
-            const downloadTabBtn = document.querySelectorAll('.tab-btn')[1];
-            if(downloadTabBtn) downloadTabBtn.classList.add('active');
-
-            const container = document.getElementById('downloads-container');
-            if(container.innerHTML.includes('Aucun téléchargement')) {
-                container.innerHTML = '';
+        // Fonction pour envoyer l'ordre d'installation à la PS4 (Port standard GoldHEN: 12800)
+        function sendToPS4(pkgUrl) {
+            const ip = document.getElementById('ps4-ip').value.trim();
+            if (!ip) {
+                alert("Veuillez entrer l'adresse IP de votre PS4 en haut de la page !");
+                return;
             }
 
-            const downloadId = 'dl-' + Date.now();
-            
-            container.innerHTML += `
-                <div class="download-item" id="${downloadId}">
-                    <div class="download-header">
-                        <span>CUSA : ${itemId}</span>
-                        <span class="dl-percent">0%</span>
-                    </div>
-                    <div class="download-info">
-                        <span class="dl-speed">Vitesse : 22.1 Mo/s</span>
-                        <span class="dl-status">Téléchargement en cours...</span>
-                    </div>
-                    <div class="progress-bar-bg">
-                        <div class="progress-bar-fill" style="width: 0%;"></div>
-                    </div>
-                </div>
-            `;
+            // Structure de la requête au service Remote Package Installer de la PS4
+            const targetApi = `http://${ip}:12800/api/install`;
+            const payload = JSON.stringify({
+                type: "direct",
+                objects: [{ package_url: pkgUrl }]
+            });
 
-            let progress = 0;
-            const interval = setInterval(() => {
-                progress += Math.floor(Math.random() * 8) + 4;
-                if (progress >= 100) {
-                    progress = 100;
-                    clearInterval(interval);
-                    
-                    const itemElement = document.getElementById(downloadId);
-                    if(itemElement) {
-                        itemElement.querySelector('.dl-percent').innerText = '100%';
-                        itemElement.querySelector('.dl-speed').innerText = 'Terminé';
-                        itemElement.querySelector('.dl-status').innerText = 'Prêt pour l\'installation (Package Installer)';
-                        itemElement.querySelector('.progress-bar-fill').style.width = '100%';
-                    }
-                    
-                    addToHistory('CUSA : ' + itemId);
+            fetch(targetApi, {
+                method: 'POST',
+                body: payload
+            })
+            .then(response => {
+                if(response.ok) {
+                    alert("Succès ! Le paquet a été envoyé à la PS4. Vérifiez vos notifications sur la console.");
                 } else {
-                    const itemElement = document.getElementById(downloadId);
-                    if(itemElement) {
-                        const randomSpeed = (Math.random() * 12 + 15).toFixed(1);
-                        itemElement.querySelector('.dl-percent').innerText = progress + '%';
-                        itemElement.querySelector('.dl-speed').innerText = 'Vitesse : ' + randomSpeed + ' Mo/s';
-                        itemElement.querySelector('.progress-bar-fill').style.width = progress + '%';
-                    }
+                    alert("Erreur de communication avec la PS4. Vérifiez l'IP et assurez-vous que Remote Package Installer est ouvert.");
                 }
-            }, 350);
-        }
-
-        const historyListArray = [];
-        function addToHistory(itemName) {
-            const time = new Date().toLocaleTimeString();
-            historyListArray.unshift({name: itemName, time: time});
-            
-            const container = document.getElementById('history-container');
-            container.innerHTML = '';
-            
-            historyListArray.forEach(item => {
-                container.innerHTML += `
-                    <div class="history-item">
-                        <span><strong>${item.name}</strong></span>
-                        <span style="color: var(--text-muted);">${item.time}</span>
-                    </div>
-                `;
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Échec de l'envoi (Erreur réseau ou CORS).");
             });
         }
     </script>
