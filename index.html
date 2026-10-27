@@ -21,7 +21,6 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
             padding: 0;
-            -webkit-font-smoothing: antialiased;
         }
 
         header {
@@ -34,7 +33,6 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            backdrop-filter: blur(10px);
         }
 
         .logo {
@@ -47,7 +45,6 @@
         .tabs {
             display: flex;
             gap: 20px;
-            overflow-x: auto;
         }
 
         .tab-btn {
@@ -61,13 +58,6 @@
             cursor: pointer;
             padding: 8px 12px;
             border-radius: 4px;
-            white-space: nowrap;
-            transition: color 0.2s, background 0.2s;
-        }
-
-        .tab-btn:hover {
-            color: var(--text-main);
-            background: var(--surface-hover);
         }
 
         .tab-btn.active {
@@ -88,7 +78,7 @@
 
         .hero-banner {
             padding: 30px;
-            background: linear-gradient(135deg, var(--surface-color), #0d0f13);
+            background: var(--surface-color);
             border: 1px solid var(--border-color);
             border-radius: 8px;
             margin-bottom: 35px;
@@ -97,7 +87,6 @@
         .hero-banner h1 {
             font-size: 24px;
             font-weight: 800;
-            letter-spacing: 2px;
             margin: 0 0 8px 0;
             text-transform: uppercase;
         }
@@ -105,12 +94,10 @@
         .hero-banner p {
             font-size: 12px;
             color: var(--text-muted);
-            letter-spacing: 1px;
             margin: 0;
             text-transform: uppercase;
         }
 
-        /* --- PARAMÈTRES --- */
         .settings-card {
             background: var(--surface-color);
             border: 1px solid var(--border-color);
@@ -129,7 +116,6 @@
             font-size: 12px;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1px;
             margin-bottom: 8px;
             color: var(--text-muted);
         }
@@ -140,5 +126,419 @@
             border: 1px solid var(--border-color);
             color: #fff;
             padding: 12px;
-            border
-        
+            border-radius: 4px;
+            font-size: 12px;
+            box-sizing: border-box;
+        }
+
+        .save-settings-btn {
+            background: #ffffff;
+            color: #08090a;
+            border: none;
+            padding: 12px 25px;
+            font-size: 11px;
+            font-weight: 900;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card-img-container {
+            width: 100%;
+            height: 150px;
+            background-color: #0f1115;
+            position: relative;
+        }
+
+        .card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-fallback {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-muted);
+            font-weight: 800;
+            font-size: 12px;
+        }
+
+        .card-content {
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: space-between;
+        }
+
+        .badge {
+            display: inline-block;
+            font-size: 9px;
+            font-weight: 800;
+            padding: 3px 8px;
+            background: #1f242d;
+            color: #d1d5db;
+            border-radius: 3px;
+            margin-bottom: 10px;
+        }
+
+        .card h3 {
+            font-size: 13px;
+            font-weight: 700;
+            margin: 0 0 15px 0;
+        }
+
+        .btn {
+            display: block;
+            background-color: var(--text-main);
+            color: var(--bg-color);
+            text-align: center;
+            padding: 11px;
+            text-decoration: none;
+            font-size: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            border-radius: 4px;
+            cursor: pointer;
+            border: none;
+        }
+
+        .download-manager, .history-list {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 25px;
+        }
+
+        .download-item {
+            background: #0b0d10;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .download-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .download-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 8px;
+            background-color: #1a1d23;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background-color: #fff;
+            width: 0%;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 14px 10px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">VAULT.</div>
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('store', event)" id="nav-store">Catalogue</button>
+            <button class="tab-btn" onclick="switchTab('downloads', event)" id="nav-downloads">Téléchargements</button>
+            <button class="tab-btn" onclick="switchTab('history', event)" id="nav-history">Historique</button>
+            <button class="tab-btn" onclick="switchTab('settings', event)" id="nav-settings">Paramètres</button>
+        </div>
+    </header>
+
+    <div id="store-section" class="section active">
+        <div class="hero-banner">
+            <h1 id="txt-title">Catalogue de Jeux</h1>
+            <p id="txt-subtitle">Envoyez vos paquets directement à la PS4 via Remote Package Installer</p>
+        </div>
+        <div class="grid" id="games-grid">
+            <div style="color: var(--text-muted); text-align: center; grid-column: 1/-1; padding: 40px;">Chargement...</div>
+        </div>
+    </div>
+
+    <div id="downloads-section" class="section">
+        <div class="hero-banner">
+            <h1 id="dl-title">File d'attente</h1>
+            <p id="dl-subtitle">Suivi des transferts actifs vers la console</p>
+        </div>
+        <div class="download-manager" id="downloads-container">
+            <div id="no-downloads" style="color: var(--text-muted); text-align: center; padding: 20px;">Aucun transfert en cours.</div>
+        </div>
+    </div>
+
+    <div id="history-section" class="section">
+        <div class="hero-banner">
+            <h1 id="hist-title">Historique</h1>
+            <p id="hist-subtitle">Registre des éléments envoyés</p>
+        </div>
+        <div class="history-list" id="history-container">
+            <div id="no-history" style="color: var(--text-muted); text-align: center; padding: 20px;">Aucun historique enregistré.</div>
+        </div>
+    </div>
+
+    <div id="settings-section" class="section">
+        <div class="hero-banner">
+            <h1 id="set-title">Paramètres</h1>
+            <p id="set-subtitle">Configuration de l'adresse IP PS4 et de la langue</p>
+        </div>
+        <div class="settings-card">
+            <div class="setting-group">
+                <label id="lbl-ip">Adresse IP de la PS4</label>
+                <input type="text" id="setting-ip" placeholder="Ex: 192.168.1.50">
+            </div>
+            <div class="setting-group">
+                <label id="lbl-lang">Langue / Language</label>
+                <select id="setting-lang" onchange="changeLanguage(this.value)">
+                    <option value="fr">Français</option>
+                    <option value="en">English</option>
+                </select>
+            </div>
+            <button class="save-settings-btn" onclick="saveSettings()" id="btn-save">Enregistrer</button>
+        </div>
+    </div>
+
+    <script>
+        const translations = {
+            fr: {
+                navStore: "Catalogue", navDl: "Téléchargements", navHist: "Historique", navSet: "Paramètres",
+                title: "Catalogue de Jeux", subtitle: "Envoyez vos paquets directement à la PS4 via Remote Package Installer",
+                dlTitle: "File d'attente", dlSubtitle: "Suivi des transferts actifs vers la console", noDl: "Aucun transfert en cours.",
+                histTitle: "Historique", histSubtitle: "Registre des éléments envoyés", noHist: "Aucun historique enregistré.",
+                setTitle: "Paramètres", setSubtitle: "Configuration de l'adresse IP PS4 et de la langue",
+                lblIp: "Adresse IP de la PS4", lblLang: "Langue / Language", btnSave: "Enregistrer",
+                btnInstall: "Installer sur PS4", saved: "Paramètres enregistrés !",
+                noIp: "Veuillez configurer l'adresse IP de votre PS4 dans les Paramètres !",
+                statusActive: "Envoi en cours...", statusDone: "Envoyé avec succès"
+            },
+            en: {
+                navStore: "Catalog", navDl: "Downloads", navHist: "History", navSet: "Settings",
+                title: "Game Catalog", subtitle: "Send your packages directly to PS4 via Remote Package Installer",
+                dlTitle: "Download Queue", dlSubtitle: "Active transfers tracking", noDl: "No active transfers.",
+                histTitle: "History", histSubtitle: "Registry of sent items", noHist: "No history recorded.",
+                setTitle: "Settings", setSubtitle: "PS4 IP address and language configuration",
+                lblIp: "PS4 IP Address", lblLang: "Language", btnSave: "Save",
+                btnInstall: "Install on PS4", saved: "Settings saved!",
+                noIp: "Please configure your PS4 IP address in Settings!",
+                statusActive: "Sending...", statusDone: "Successfully sent"
+            }
+        };
+
+        let currentLang = 'fr';
+        const historyListArray = [];
+
+        try {
+            const savedLang = localStorage.getItem('ps4_lang');
+            if (savedLang) currentLang = savedLang;
+        } catch(e) {}
+
+        window.onload = function() {
+            try {
+                const savedIp = localStorage.getItem('ps4_ip');
+                if (savedIp) document.getElementById('setting-ip').value = savedIp;
+                document.getElementById('setting-lang').value = currentLang;
+            } catch(e) {}
+            changeLanguage(currentLang);
+            loadGamesJson();
+        };
+
+        function saveSettings() {
+            try {
+                const ip = document.getElementById('setting-ip').value.trim();
+                const lang = document.getElementById('setting-lang').value;
+                localStorage.setItem('ps4_ip', ip);
+                localStorage.setItem('ps4_lang', lang);
+                alert(translations[currentLang].saved);
+                switchTab('store', { target: document.getElementById('nav-store') });
+            } catch(e) {
+                alert("Erreur de sauvegarde");
+            }
+        }
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+
+            document.getElementById('nav-store').innerText = t.navStore;
+            document.getElementById('nav-downloads').innerText = t.navDl;
+            document.getElementById('nav-history').innerText = t.navHist;
+            document.getElementById('nav-settings').innerText = t.navSet;
+
+            document.getElementById('txt-title').innerText = t.title;
+            document.getElementById('txt-subtitle').innerText = t.subtitle;
+            document.getElementById('dl-title').innerText = t.dlTitle;
+            document.getElementById('dl-subtitle').innerText = t.dlSubtitle;
+            document.getElementById('hist-title').innerText = t.histTitle;
+            document.getElementById('hist-subtitle').innerText = t.histSubtitle;
+            document.getElementById('set-title').innerText = t.setTitle;
+            document.getElementById('set-subtitle').innerText = t.setSubtitle;
+            document.getElementById('lbl-ip').innerText = t.lblIp;
+            document.getElementById('lbl-lang').innerText = t.lblLang;
+            document.getElementById('btn-save').innerText = t.btnSave;
+        }
+
+        function switchTab(tabName, event) {
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+            const target = document.getElementById(tabName + '-section');
+            if (target) target.classList.add('active');
+            if (event && event.target) event.target.classList.add('active');
+        }
+
+        function loadGamesJson() {
+            fetch('games.json')
+                .then(response => {
+                    if (!response.ok) throw new Error("Fichier introuvable");
+                    return response.json();
+                })
+                .then(data => {
+                    const storeGrid = document.getElementById('games-grid');
+                    storeGrid.innerHTML = '';
+                    
+                    const keys = Object.keys(data);
+                    if (keys.length === 0) {
+                        storeGrid.innerHTML = '<div style="color: #8c929d; text-align: center; grid-column: 1/-1; padding: 40px;">Aucun élément dans games.json</div>';
+                        return;
+                    }
+
+                    keys.forEach(key => {
+                        const fileUrl = data[key];
+                        const btnText = translations[currentLang].btnInstall;
+                        storeGrid.innerHTML += `
+                            <div class="card">
+                                <div class="card-img-container">
+                                    <img src="${fileUrl}" class="card-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                                    <div class="card-fallback" style="display:none;">VAULT ASSET</div>
+                                </div>
+                                <div class="card-content">
+                                    <div>
+                                        <span class="badge">CUSA : ${key}</span>
+                                        <h3>Élément ${key}</h3>
+                                    </div>
+                                    <button class="btn" onclick="sendToPS4('${key}', '${fileUrl}')">${btnText}</button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                })
+                .catch(() => {
+                    const storeGrid = document.getElementById('games-grid');
+                    storeGrid.innerHTML = '<div style="color: #ff5555; text-align: center; grid-column: 1/-1; padding: 40px;">Erreur de chargement du fichier games.json</div>';
+                });
+        }
+
+        function sendToPS4(itemId, pkgUrl) {
+            let ip = "";
+            try { ip = localStorage.getItem('ps4_ip') || document.getElementById('setting-ip').value.trim(); } 
+            catch(e) { ip = document.getElementById('setting-ip').value.trim(); }
+
+            if (!ip) {
+                alert(translations[currentLang].noIp);
+                switchTab('settings', { target: document.getElementById('nav-settings') });
+                return;
+            }
+
+            switchTab('downloads', { target: document.getElementById('nav-downloads') });
+            
+            const container = document.getElementById('downloads-container');
+            const noDl = document.getElementById('no-downloads');
+            if(noDl) noDl.style.display = 'none';
+
+            const downloadId = 'dl-' + Date.now();
+            const t = translations[currentLang];
+
+            container.innerHTML += `
+                <div class="download-item" id="${downloadId}">
+                    <div class="download-header">
+                        <span>CUSA : ${itemId}</span>
+                        <span class="dl-percent">0%</span>
+                    </div>
+                    <div class="download-info">
+                        <span>Remote Link</span>
+                        <span>${t.statusActive}</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" style="width: 100%;"></div>
+                    </div>
+                </div>
+            `;
+
+            fetch(`http://${ip}:12800/api/install`, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: JSON.stringify({ type: "direct", objects: [{ package_url: pkgUrl }] })
+            })
+            .then(() => {
+                const el = document.getElementById(downloadId);
+                if(el) {
+                    el.querySelector('.dl-percent').innerText = '100%';
+                    el.querySelector('span:nth-child(2)').innerText = t.statusDone;
+                }
+                addToHistory('CUSA : ' + itemId);
+            })
+            .catch(() => {
+                const el = document.getElementById(downloadId);
+                if(el) el.querySelector('span:nth-child(2)').innerText = "Erreur de connexion";
+            });
+        }
+
+        function addToHistory(itemName) {
+            const time = new Date().toLocaleTimeString();
+            historyListArray.unshift({name: itemName, time: time});
+            const container = document.getElementById('history-container');
+            container.innerHTML = '';
+            historyListArray.forEach(item => {
+                container.innerHTML += `
+                    <div class="history-item">
+                        <span><strong>${item.name}</strong></span>
+                        <span style="color: #8c929d;">${item.time}</span>
+                    </div>
+                `;
+            });
+        }
+    </script>
+</body>
+</html>
