@@ -374,7 +374,7 @@
     <div id="welcome-screen">
         <div class="welcome-logo">VAULT</div>
         <div class="welcome-sub">PS4 Remote Installer Hub</div>
-        <button class="enter-btn" onclick="enterVault()">ENTRER</button>
+        <button class="enter-btn" id="enter-btn">ENTRER</button>
     </div>
 
     <!-- APPLICATION PRINCIPALE -->
@@ -461,4 +461,126 @@
                 statusDone: "Envoyé avec succès (Package Installer)"
             },
             en: {
-                nav
+                navStore: "Catalog", navDl: "Downloads", navHist: "History", navSet: "Settings",
+                title: "Game Catalog", subtitle: "Send your packages directly to PS4 via Remote Package Installer",
+                dlTitle: "Download Queue", dlSubtitle: "Active transfers tracking to the console", noDl: "No active transfers.",
+                histTitle: "History", histSubtitle: "Registry of sent items", noHist: "No history recorded.",
+                setTitle: "Settings", setSubtitle: "PS4 IP address and language configuration",
+                lblIp: "PS4 IP Address", lblLang: "Language", btnSave: "Save",
+                btnInstall: "Install on PS4",
+                saved: "Settings saved successfully!",
+                noIp: "Please configure your PS4 IP address in the Settings tab!",
+                statusActive: "Sending to PS4...",
+                statusDone: "Successfully sent (Package Installer)"
+            }
+        };
+
+        let currentLang = 'fr';
+        const historyListArray = [];
+
+        // Écouteur d'événement universel pour le bouton Entrer (compatible tactile, souris, manette)
+        document.addEventListener('DOMContentLoaded', function() {
+            const enterBtn = document.getElementById('enter-btn');
+            if (enterBtn) {
+                enterBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    enterVault();
+                });
+                // Support additionnel pour les navigateurs de console
+                enterBtn.addEventListener('touchend', function(e) {
+                    e.preventDefault();
+                    enterVault();
+                });
+            }
+        });
+
+        function enterVault() {
+            const welcome = document.getElementById('welcome-screen');
+            const mainApp = document.getElementById('main-app');
+            
+            if (welcome) {
+                welcome.style.cssText = 'display: none !important;';
+            }
+            if (mainApp) {
+                mainApp.style.cssText = 'display: block !important;';
+            }
+            loadSettings();
+            loadGamesJson();
+        }
+
+        function loadSettings() {
+            const savedIp = localStorage.getItem('ps4_ip');
+            const savedLang = localStorage.getItem('ps4_lang') || 'fr';
+            
+            if (savedIp) {
+                document.getElementById('setting-ip').value = savedIp;
+            }
+            document.getElementById('setting-lang').value = savedLang;
+            changeLanguage(savedLang);
+        }
+
+        function saveSettings() {
+            const ip = document.getElementById('setting-ip').value.trim();
+            const lang = document.getElementById('setting-lang').value;
+
+            localStorage.setItem('ps4_ip', ip);
+            localStorage.setItem('ps4_lang', lang);
+            
+            alert(translations[currentLang].saved);
+            switchTab('store', { target: document.getElementById('nav-store') });
+        }
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+
+            document.getElementById('nav-store').innerText = t.navStore;
+            document.getElementById('nav-downloads').innerText = t.navDl;
+            document.getElementById('nav-history').innerText = t.navHist;
+            document.getElementById('nav-settings').innerText = t.navSet;
+
+            document.getElementById('txt-title').innerText = t.title;
+            document.getElementById('txt-subtitle').innerText = t.subtitle;
+            document.getElementById('dl-title').innerText = t.dlTitle;
+            document.getElementById('dl-subtitle').innerText = t.dlSubtitle;
+            document.getElementById('hist-title').innerText = t.histTitle;
+            document.getElementById('hist-subtitle').innerText = t.histSubtitle;
+            document.getElementById('set-title').innerText = t.setTitle;
+            document.getElementById('set-subtitle').innerText = t.setSubtitle;
+            document.getElementById('lbl-ip').innerText = t.lblIp;
+            document.getElementById('lbl-lang').innerText = t.lblLang;
+            document.getElementById('btn-save').innerText = t.btnSave;
+            
+            const noDl = document.getElementById('no-downloads');
+            if(noDl) noDl.innerText = t.noDl;
+
+            const noHist = document.getElementById('no-history');
+            if(noHist) noHist.innerText = t.noHist;
+            
+            if(document.getElementById('games-grid').innerHTML.trim() !== "") {
+                loadGamesJson();
+            }
+        }
+
+        function switchTab(tabName, event) {
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(tabName + '-section').classList.add('active');
+            if(event && event.target) {
+                event.target.classList.add('active');
+            }
+        }
+
+        function loadGamesJson() {
+            fetch('games.json')
+                .then(response => response.json())
+                .then(data => {
+                    const storeGrid = document.getElementById('games-grid');
+                    storeGrid.innerHTML = '';
+                    Object.keys(data).forEach(key => {
+                        const fileUrl = data[key];
+                        const btnText = translations[currentLang].btnInstall;
+                        storeGrid.innerHTML += `
+                            <div class="card">
+                                <div class="card-img-contain
